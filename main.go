@@ -32,14 +32,14 @@ func main() {
 			return true
 		})
 
-		capName := strings.TrimRightFunc(trimName, func(r rune) bool {
+		trimName = strings.TrimRightFunc(trimName, func(r rune) bool {
 			if string(r) == "\"" {
 				return false
 			}
 			return true
 		})
 
-		fmt.Println(strings.ReplaceAll(capName, "\"", ""))
+		fmt.Println(strings.ReplaceAll(trimName, "\"", ""))
 
 		trimVol := strings.TrimLeftFunc(cs, func(r rune) bool {
 			if string(r) == "=" {
