@@ -26,26 +26,17 @@ func main() {
 	//capacity := make(map[string]int)
 	for _, cs := range cmdSlices {
 		trimName := strings.TrimLeftFunc(cs, func(r rune) bool {
-			if string(r) == "\"" {
-				return false
-			}
-			return true
+			return string(r) != "\""
 		})
 
-		capName := strings.TrimRightFunc(trimName, func(r rune) bool {
-			if string(r) == "\"" {
-				return false
-			}
-			return true
+		trimName = strings.TrimRightFunc(trimName, func(r rune) bool {
+			return string(r) != "\""
 		})
 
-		fmt.Println(strings.ReplaceAll(capName, "\"", ""))
+		fmt.Println(strings.ReplaceAll(trimName, "\"", ""))
 
 		trimVol := strings.TrimLeftFunc(cs, func(r rune) bool {
-			if string(r) == "=" {
-				return false
-			}
-			return true
+			return string(r) != "="
 		})
 
 		capVol := strings.ReplaceAll(trimVol, "=", "")
