@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"gopkg.in/pipe.v2"
 )
@@ -59,11 +60,18 @@ func main() {
 
 	capacity["CapacityRate"] = strconv.FormatFloat(maxCap/designCap, 'f', -1, 64)
 
-	insertVal := make([]string, 4)
+	insertVal := make([]string, 8)
 	insertVal[0] = capacity["CurrentCapacity"]
 	insertVal[1] = capacity["MaxCapacity"]
 	insertVal[2] = capacity["DesignCapacity"]
 	insertVal[3] = capacity["CapacityRate"]
+
+	now := []int{time.Now().Year(), int(time.Now().Month()), time.Now().Day(), time.Now().Hour()}
+	for n := 0; n < len(now); n++ {
+		insertVal[n+4] = strconv.Itoa(now[n])
+	}
+
+	fmt.Println(insertVal)
 
 	file, err := os.OpenFile("cap.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
 	if err != nil {
