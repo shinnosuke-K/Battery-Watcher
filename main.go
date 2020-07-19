@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"gopkg.in/pipe.v2"
@@ -46,21 +47,29 @@ func main() {
 		capacity[capName] = capVol
 	}
 
-	fmt.Println(capacity)
+	maxCap, err := strconv.ParseFloat(capacity["MaxCapacity"], 64)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	designCap, err := strconv.ParseFloat(capacity["DesignCapacity"], 64)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	capacity["CapacityRate"] = strconv.FormatFloat(maxCap/designCap, 'f', -1, 64)
+
+	insertVal := make([]string, 4)
+	insertVal[0] = capacity["CurrentCapacity"]
+	insertVal[1] = capacity["MaxCapacity"]
+	insertVal[2] = capacity["DesignCapacity"]
+	insertVal[3] = capacity["CapacityRate"]
 
 	file, err := os.OpenFile("cap.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// Turn: MaxCapacity, CurrentCapacity, DesignCapacity
 	csvFile := csv.NewWriter(file)
-	var insertVal []string
-	for k, v := range capacity {
-		fmt.Println(k, v)
-		insertVal = append(insertVal, v)
-	}
-
 	if err := csvFile.Write(insertVal); err != nil {
 		log.Fatalln(err)
 	}
