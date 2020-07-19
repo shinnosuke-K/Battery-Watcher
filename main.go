@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"strconv"
 	"strings"
 
 	"gopkg.in/pipe.v2"
@@ -21,9 +23,9 @@ func main() {
 	}
 
 	cmdResults := fmt.Sprintf("%s", byteResults)
-	cmdSlices := strings.Split(strings.ReplaceAll(cmdResults, " ", ""), "\n")
+	cmdSlices := strings.Split(strings.ReplaceAll(cmdResults, " ", ""), "\n")[:3]
 
-	//capacity := make(map[string]int)
+	capacity := make(map[string]int)
 	for _, cs := range cmdSlices {
 		trimName := strings.TrimLeftFunc(cs, func(r rune) bool {
 			return string(r) != "\""
@@ -33,13 +35,19 @@ func main() {
 			return string(r) != "\""
 		})
 
-		fmt.Println(strings.ReplaceAll(trimName, "\"", ""))
+		capName := strings.ReplaceAll(trimName, "\"", "")
 
 		trimVol := strings.TrimLeftFunc(cs, func(r rune) bool {
 			return string(r) != "="
 		})
 
 		capVol := strings.ReplaceAll(trimVol, "=", "")
-		fmt.Println(capVol)
+
+		capacity[capName], err = strconv.Atoi(capVol)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
+
+	fmt.Println(capacity)
 }
