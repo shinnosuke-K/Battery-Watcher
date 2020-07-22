@@ -98,7 +98,7 @@ func save(iv []string) error {
 func main() {
 	byteResults, err := pipeLine()
 	if err != nil {
-		fmt.Printf("%v\n", err)
+		log.Fatalln(err)
 	}
 
 	cmdResults := fmt.Sprintf("%s", byteResults)
@@ -110,13 +110,10 @@ func main() {
 	if err := c.calRate(); err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(c.Data)
 
 	insertVal := make([]string, 8)
 	setCap(insertVal, c)
 	setDate(insertVal)
-
-	fmt.Println(insertVal)
 
 	if err := save(insertVal); err != nil {
 		log.Fatalln(err)
