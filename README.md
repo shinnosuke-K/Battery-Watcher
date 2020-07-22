@@ -53,7 +53,7 @@ MaxCapacity, CurrentCapacity, DesignCapacity, Rate, Year, Month, Day, Hour
 
 #### MaxCapacity, CurrentCapacity, DesignCapacity
 
-&ensp;&ensp;この3つの情報については["充電量情報について"](#currentcapacity)で紹介したものｔ同じになります。
+&ensp;&ensp;この3つの情報については["充電量情報について"](#currentcapacity)で紹介したものｔ同じになります。
 
 
 #### Rate
