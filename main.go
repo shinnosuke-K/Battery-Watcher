@@ -12,7 +12,7 @@ import (
 	"gopkg.in/pipe.v2"
 )
 
-func main() {
+func pipeLine() ([]byte, error) {
 	p := pipe.Line(
 		pipe.Exec("ioreg", "-l"),
 		pipe.Exec("grep", "-v", "Apple"),
@@ -20,17 +20,16 @@ func main() {
 		pipe.Exec("grep", "-e", "MaxCapacity", "-e", "DesignCapacity", "-e", "CurrentCapacity"),
 	)
 
-	byteResults, err := pipe.CombinedOutput(p)
-	if err != nil {
-		fmt.Printf("%v\n", err)
-	}
+	return pipe.CombinedOutput(p)
+}
 
-	cmdResults := fmt.Sprintf("%s", byteResults)
-	cmdSlices := strings.Split(strings.ReplaceAll(cmdResults, " ", ""), "\n")[:3]
+type Cap struct {
+	Data map[string]string
+}
 
-	capacity := make(map[string]string)
-	for _, cs := range cmdSlices {
-		trimName := strings.TrimLeftFunc(cs, func(r rune) bool {
+func (cap Cap) extraData(data []string) {
+	for _, d := range data {
+		trimName := strings.TrimLeftFunc(d, func(r rune) bool {
 			return string(r) != "\""
 		})
 
@@ -40,50 +39,86 @@ func main() {
 
 		capName := strings.ReplaceAll(trimName, "\"", "")
 
-		trimVol := strings.TrimLeftFunc(cs, func(r rune) bool {
+		trimVol := strings.TrimLeftFunc(d, func(r rune) bool {
 			return string(r) != "="
 		})
 
 		capVol := strings.ReplaceAll(trimVol, "=", "")
-		capacity[capName] = capVol
+		cap.Data[capName] = capVol
 	}
+}
 
-	maxCap, err := strconv.ParseFloat(capacity["MaxCapacity"], 64)
+func (cap Cap) calRate() error {
+	maxCap, err := strconv.ParseFloat(cap.Data["MaxCapacity"], 64)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
-	designCap, err := strconv.ParseFloat(capacity["DesignCapacity"], 64)
+	designCap, err := strconv.ParseFloat(cap.Data["DesignCapacity"], 64)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
-	capacity["CapacityRate"] = strconv.FormatFloat(maxCap/designCap, 'f', -1, 64)
+	cap.Data["CapacityRate"] = strconv.FormatFloat(maxCap/designCap, 'f', -1, 64)
+	return nil
+}
 
-	insertVal := make([]string, 8)
-	insertVal[0] = capacity["CurrentCapacity"]
-	insertVal[1] = capacity["MaxCapacity"]
-	insertVal[2] = capacity["DesignCapacity"]
-	insertVal[3] = capacity["CapacityRate"]
+func setCap(iv []string, c Cap) {
+	iv[0] = c.Data["CurrentCapacity"]
+	iv[1] = c.Data["MaxCapacity"]
+	iv[2] = c.Data["DesignCapacity"]
+	iv[3] = c.Data["CapacityRate"]
+}
 
+func setDate(iv []string) {
 	now := []int{time.Now().Year(), int(time.Now().Month()), time.Now().Day(), time.Now().Hour()}
 	for n := 0; n < len(now); n++ {
-		insertVal[n+4] = strconv.Itoa(now[n])
+		iv[n+4] = strconv.Itoa(now[n])
 	}
+}
 
-	fmt.Println(insertVal)
-
+func save(iv []string) error {
 	file, err := os.OpenFile("cap.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
 	csvFile := csv.NewWriter(file)
-	if err := csvFile.Write(insertVal); err != nil {
-		log.Fatalln(err)
+	if err := csvFile.Write(iv); err != nil {
+		return err
 	}
 
 	csvFile.Flush()
 	if err := csvFile.Error(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func main() {
+	byteResults, err := pipeLine()
+	if err != nil {
+		fmt.Printf("%v\n", err)
+	}
+
+	cmdResults := fmt.Sprintf("%s", byteResults)
+	cmdSlices := strings.Split(strings.ReplaceAll(cmdResults, " ", ""), "\n")[:3]
+
+	c := Cap{Data: make(map[string]string)}
+	c.extraData(cmdSlices)
+
+	if err := c.calRate(); err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(c.Data)
+
+	insertVal := make([]string, 8)
+	setCap(insertVal, c)
+	setDate(insertVal)
+
+	fmt.Println(insertVal)
+
+	if err := save(insertVal); err != nil {
 		log.Fatalln(err)
 	}
 }
