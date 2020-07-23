@@ -1,4 +1,4 @@
-module github.com/shinnosuke-K/gobatwatch
+module github.com/shinnosuke-K/Battery-Watcher
 
 go 1.14
 
