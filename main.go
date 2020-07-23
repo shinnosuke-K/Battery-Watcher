@@ -19,7 +19,6 @@ func pipeLine() ([]byte, error) {
 		pipe.Exec("grep", "-v", "BatteryData"),
 		pipe.Exec("grep", "-e", "MaxCapacity", "-e", "DesignCapacity", "-e", "CurrentCapacity"),
 	)
-
 	return pipe.CombinedOutput(p)
 }
 
