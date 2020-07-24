@@ -78,7 +78,7 @@ func setDate(iv []string) {
 }
 
 func save(iv []string, path string) error {
-	file, err := os.OpenFile(path+"/cap.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
+	file, err := os.OpenFile(path+"/cap.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
