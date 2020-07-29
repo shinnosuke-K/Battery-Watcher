@@ -98,7 +98,7 @@ func save(iv []string, path string) error {
 func main() {
 	byteResults, err := pipeLine()
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 
 	cmdResults := fmt.Sprintf("%s", byteResults)
@@ -108,7 +108,7 @@ func main() {
 	c.extraData(cmdSlices)
 
 	if err := c.calRate(); err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 
 	insertVal := make([]string, 8)
@@ -123,6 +123,6 @@ func main() {
 	flag.Parse()
 
 	if err := save(insertVal, *path); err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 }
