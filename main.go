@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -76,8 +77,8 @@ func setDate(iv []string) {
 	}
 }
 
-func save(iv []string) error {
-	file, err := os.OpenFile("cap.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
+func save(iv []string, path string) error {
+	file, err := os.OpenFile(path+"/cap.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
@@ -114,7 +115,14 @@ func main() {
 	setCap(insertVal, c)
 	setDate(insertVal)
 
-	if err := save(insertVal); err != nil {
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	path := flag.String("path", currentDir, "string flag")
+	flag.Parse()
+
+	if err := save(insertVal, *path); err != nil {
 		log.Fatal(err)
 	}
 }
