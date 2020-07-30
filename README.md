@@ -53,7 +53,7 @@ MaxCapacity, CurrentCapacity, DesignCapacity, Rate, Year, Month, Day, Hour
 
 #### MaxCapacity, CurrentCapacity, DesignCapacity
 
-&ensp;&ensp;この3つの情報については["充電量情報について"](#currentcapacity)で紹介したものｔ同じになります。
+&ensp;&ensp;この3つの情報については["充電量情報について"](#currentcapacity)で紹介したものと同じになります。
 
 
 #### Rate
@@ -76,7 +76,7 @@ Rate = MaxCapacity / DesignCapacity
 
 なので、UNIXコマンドを使うなら、シェルスクリプトでもいい気がしています。
 
-なので、シェルスクリプトでもやってみてどちらがいいか検討をする予定です。
+今後、シェルスクリプトでもやってみてどちらがいいか検討をする予定です。
 
 ## 今後
 
@@ -88,4 +88,4 @@ Rate = MaxCapacity / DesignCapacity
 
 グラフを見ることでなにかおもしろいものが見えてくるかもしれません。
 
-なので、まずは半年ぐらいを目処にグラフ化を行い、どこかのLTで発表できればと思います。
+まずは半年ぐらいを目処にグラフ化を行い、どこかのLTで発表できればと思います。
