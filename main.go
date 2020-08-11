@@ -119,7 +119,7 @@ func main() {
 
 	currentDir, err := os.Getwd()
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 	path := flag.String("path", currentDir, "string flag")
 	flag.Parse()
