@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -78,7 +79,8 @@ func setDate(iv []string) {
 }
 
 func save(iv []string, path string) error {
-	file, err := os.OpenFile(path+"/cap.csv", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+	filePath := filepath.Join(path, "cap.csv")
+	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
@@ -117,7 +119,7 @@ func main() {
 
 	currentDir, err := os.Getwd()
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 	path := flag.String("path", currentDir, "string flag")
 	flag.Parse()
