@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"strings"
+
+	"github.com/shinnosuke-K/Battery-Watcher/refactoring/capacity"
 
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/command"
 )
@@ -26,7 +27,12 @@ func main() {
 		log.Fatal(err)
 	}
 	sliceOuts := strings.Split(strings.ReplaceAll(strOut, " ", ""), "\n")[:3]
-	fmt.Println(sliceOuts)
+
+	cap := capacity.New()
+	cap.SetData(sliceOuts)
+	if err := cap.CalcRate(); err != nil {
+		log.Fatal(err)
+	}
 
 	if err := cmd.Done(); err != nil {
 		log.Fatal(err)
