@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/capacity"
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/command"
+	"github.com/shinnosuke-K/Battery-Watcher/refactoring/save"
 )
 
 func main() {
+	now := time.Now()
 
 	cmd := command.New()
 	cmd.Set()
@@ -38,7 +41,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	cap.SetDate()
+	s := save.New()
+	s.SetValues(cap.Data, now)
 
-	fmt.Println(cap)
+	fmt.Println(s)
 }
