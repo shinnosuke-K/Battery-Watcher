@@ -4,17 +4,10 @@ import (
 	"log"
 	"strconv"
 	"strings"
-	"time"
 )
 
 type Capacity struct {
 	Data map[string]string
-	Date struct {
-		Year  int
-		Month int
-		Day   int
-		Hour  int
-	}
 }
 
 func New() *Capacity {
@@ -46,12 +39,4 @@ func (cap *Capacity) CalcRate() error {
 
 	cap.Data["CapacityRate"] = strconv.FormatFloat(maxCap/designCap, 'f', -1, 64)
 	return nil
-}
-
-func (cap *Capacity) SetDate() {
-	now := time.Now()
-	cap.Date.Year = now.Year()
-	cap.Date.Day = now.Day()
-	cap.Date.Month = int(now.Month())
-	cap.Date.Hour = now.Hour()
 }
