@@ -6,12 +6,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/robfig/cron/v3"
+
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/capacity"
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/command"
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/save"
 )
 
-func main() {
+func do() {
 	now := time.Now()
 
 	cmd := command.New()
@@ -45,4 +47,11 @@ func main() {
 	s.SetValues(cap.Data, now)
 
 	fmt.Println(s)
+
+}
+
+func main() {
+	c := cron.New(cron.WithSeconds())
+	c.AddFunc("@every 1s", do)
+	c.Run()
 }
