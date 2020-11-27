@@ -20,7 +20,7 @@ func (iv *InsertValue) SetValues(data map[string]string, now time.Time) {
 		iv.Values = append(iv.Values, v)
 	}
 	iv.Values = append(iv.Values, strconv.Itoa(now.Year()))
-	iv.Values = append(iv.Values, strconv.Itoa(int(time.Now().Month())))
+	iv.Values = append(iv.Values, strconv.Itoa(int(now.Month())))
 	iv.Values = append(iv.Values, strconv.Itoa(now.Day()))
 	iv.Values = append(iv.Values, strconv.Itoa(now.Hour()))
 }
