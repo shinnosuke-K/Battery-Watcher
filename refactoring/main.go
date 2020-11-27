@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 	"time"
 
@@ -44,10 +45,23 @@ func do() {
 	}
 
 	s := save.New()
-	s.SetValues(cap.Data, now)
+	s.SetValues(cap.Data, cap.Name, now)
+
+	pwd, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fileName := "/refactoring/cap.csv"
+
+	if err := s.CreateFile(pwd, fileName); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := s.Do(); err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Println(s)
-
 }
 
 func main() {

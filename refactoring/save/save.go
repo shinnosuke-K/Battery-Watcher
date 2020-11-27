@@ -17,10 +17,11 @@ func New() *InsertValue {
 	return &InsertValue{}
 }
 
-func (iv *InsertValue) SetValues(data map[string]string, now time.Time) {
-	for _, v := range data {
-		iv.Values = append(iv.Values, v)
+func (iv *InsertValue) SetValues(data map[string]string, name []string, now time.Time) {
+	for _, n := range name {
+		iv.Values = append(iv.Values, data[n])
 	}
+
 	iv.Values = append(iv.Values, strconv.Itoa(now.Year()))
 	iv.Values = append(iv.Values, strconv.Itoa(int(now.Month())))
 	iv.Values = append(iv.Values, strconv.Itoa(now.Day()))
