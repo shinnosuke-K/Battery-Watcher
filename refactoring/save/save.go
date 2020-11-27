@@ -50,22 +50,3 @@ func (iv *InsertValue) Do() error {
 	}
 	return nil
 }
-
-//func Do(path string) error {
-//	filePath := filepath.Join(path, "cap.csv")
-//	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
-//	if err != nil {
-//		return err
-//	}
-//
-//	csvFile := csv.NewWriter(file)
-//	if err := csvFile.Write(iv); err != nil {
-//		return err
-//	}
-//
-//	csvFile.Flush()
-//	if err := csvFile.Error(); err != nil {
-//		return err
-//	}
-//	return nil
-//}
