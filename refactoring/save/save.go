@@ -1,6 +1,7 @@
 package save
 
 import (
+	"encoding/csv"
 	"os"
 	"strconv"
 	"time"
@@ -29,6 +30,19 @@ func (iv *InsertValue) CreateFile(filePath string) error {
 	var err error
 	iv.CSVFile, err = os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (iv *InsertValue) Do() error {
+	file := csv.NewWriter(iv.CSVFile)
+	if err := file.Write(iv.Values); err != nil {
+		return err
+	}
+
+	file.Flush()
+	if err := file.Error(); err != nil {
 		return err
 	}
 	return nil
