@@ -3,6 +3,7 @@ package save
 import (
 	"encoding/csv"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 )
@@ -26,7 +27,9 @@ func (iv *InsertValue) SetValues(data map[string]string, now time.Time) {
 	iv.Values = append(iv.Values, strconv.Itoa(now.Hour()))
 }
 
-func (iv *InsertValue) CreateFile(filePath string) error {
+func (iv *InsertValue) CreateFile(path string, fileName string) error {
+	filePath := filepath.Join(path, fileName)
+
 	var err error
 	iv.CSVFile, err = os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {
