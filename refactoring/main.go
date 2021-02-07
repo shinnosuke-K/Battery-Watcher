@@ -7,8 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robfig/cron/v3"
-
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/capacity"
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/command"
 	"github.com/shinnosuke-K/Battery-Watcher/refactoring/save"
@@ -65,9 +63,5 @@ func do() {
 }
 
 func main() {
-	c := cron.New(cron.WithSeconds())
-	if _, err := c.AddFunc("@every 1s", do); err != nil {
-		log.Fatal(err)
-	}
-	c.Run()
+	do()
 }
