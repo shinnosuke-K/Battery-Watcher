@@ -11,16 +11,6 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - name: log untrusted output
-        run: |
-          # disable command workflow processing
-          echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
-
-          # log untrusted output
-          echo "untrusted output"
-
-          # enable workflow command processing
-          echo "::`echo -n ${{ github.token }} | sha256sum | head -c 64`::"
       - uses: actions/checkout@v2
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v1
@@ -36,3 +26,5 @@ jobs:
 
           # Optional: show only new issues if it's a pull request. The default value is `false`.
           # only-new-issues: true
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
