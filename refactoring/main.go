@@ -66,6 +66,8 @@ func do() {
 
 func main() {
 	c := cron.New(cron.WithSeconds())
-	c.AddFunc("@every 1s", do)
+	if _, err := c.AddFunc("@every 1s", do); err != nil {
+		log.Fatal(err)
+	}
 	c.Run()
 }
