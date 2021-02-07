@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: log untrusted output
-        run:
+        run: |
           # disable command workflow processing
           echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
 
