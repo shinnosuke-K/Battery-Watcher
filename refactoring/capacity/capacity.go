@@ -7,6 +7,7 @@ import (
 )
 
 type Capacity struct {
+	Name []string
 	Data map[string]string
 }
 
@@ -23,6 +24,8 @@ func (cap *Capacity) SetData(outputs []string) {
 
 		slicedOutput := strings.Split(replacedOutput, "=")
 		cap.Data[slicedOutput[0]] = slicedOutput[1]
+
+		cap.Name = append(cap.Name, slicedOutput[0])
 	}
 }
 
@@ -38,5 +41,6 @@ func (cap *Capacity) CalcRate() error {
 	}
 
 	cap.Data["CapacityRate"] = strconv.FormatFloat(maxCap/designCap, 'f', -1, 64)
+	cap.Name = append(cap.Name, "CapacityRate")
 	return nil
 }
