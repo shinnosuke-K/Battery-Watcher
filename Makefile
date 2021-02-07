@@ -1,7 +1,6 @@
 PATH = ${PWD}
 
 init:
-	go get -u ./...
 	go build -o batwatch main.go
 	touch battery-watch-daily.plist
 	touch watch.sh
